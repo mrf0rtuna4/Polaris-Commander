@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PolarisCommander.App/PolarisCommander.App.csproj" />
+    <Project Path="src/PolarisCommander.Core/PolarisCommander.Core.csproj" />
+    <Project Path="src/PolarisCommander.Infrastructure/PolarisCommander.Infrastructure.csproj" />
+    <Project Path="src/PolarisCommander.Protocols/PolarisCommander.Protocols.csproj" />
+    <Project Path="src/PolarisCommander.UI/PolarisCommander.UI.csproj" />
+  </Folder>
+</Solution>
