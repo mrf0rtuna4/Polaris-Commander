@@ -1,44 +1,58 @@
-﻿using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using PolarisCommander_App.Services;
+using PolarisCommander_App.Services.Abstractions;
+using PolarisCommander_App.ViewModels;
 
 namespace PolarisCommander_App;
 
-/// <summary>
-/// Provides application-specific behavior to supplement the default Application class.
-/// </summary>
 public partial class App : Application
 {
     private Window? _window;
-    
-    /// <summary>
-    /// Initializes the singleton application object.  This is the first line of authored code
-    /// executed, and as such is the logical equivalent of main() or WinMain().
-    /// </summary>
+
     public App()
     {
         InitializeComponent();
+        Services = ConfigureServices();
     }
 
-    /// <summary>
-    /// Invoked when the application is launched.
-    /// </summary>
-    /// <param name="args">Details about the launch request and process.</param>
+    public static IServiceProvider Services { get; private set; } = null!;
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
         _window = new MainWindow();
         _window.Activate();
+    }
+
+
+    private static IServiceProvider ConfigureServices()
+    {
+        ServiceCollection services = new();
+
+        services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<IFileSystemService, FileSystemService>();
+
+        services.AddSingleton<IFtpClientService, StubFtpClientService>();
+        services.AddSingleton<ISftpClientService, StubSftpClientService>();
+
+        services.AddTransient<MainViewModel>();
+
+        return services.BuildServiceProvider();
+    }
+}
+
+file sealed class StubFtpClientService : IFtpClientService
+{
+    public Task ConnectAsync(string host, int port, string userName, string password, CancellationToken cancellationToken = default)
+    {
+        return Task.CompletedTask;
+    }
+}
+
+file sealed class StubSftpClientService : ISftpClientService
+{
+    public Task ConnectAsync(string host, int port, string userName, string password, CancellationToken cancellationToken = default)
+    {
+        return Task.CompletedTask;
     }
 }

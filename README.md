@@ -82,16 +82,16 @@ dotnet add package FluentFTP
 * [x] Настроить references
 * [x] Подключить MVVM
 * [x] Подключить DI
-* [ ] Сделать MainWindow
-* [ ] Добавить sidebar
-* [ ] Добавить file list
-* [ ] Сделать LocalFileProvider
-* [ ] Подготовить FTP provider
-* [ ] Подготовить SFTP provider
-* [ ] Добавить базовую навигацию
+* [x] Сделать MainWindow
+* [x] Добавить sidebar
+* [x] Добавить file list
+* [x] Сделать LocalFileProvider
+* [x] Подготовить FTP provider
+* [x] Подготовить SFTP provider
+* [x] Добавить базовую навигацию
 * [ ] Настроить themes
 * [x] Добавить .gitignore
-* [ ] double click navigation
+* [x] double click navigation
 * [ ] back history
 * [ ] forward history
 * [ ] breadcrumbs
