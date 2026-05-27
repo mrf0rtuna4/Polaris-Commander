@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "PolarisCommander.App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "PolarisCommander.App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
