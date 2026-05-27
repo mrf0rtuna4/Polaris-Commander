@@ -9,11 +9,11 @@
   IgnorableNamespaces="uap rescap systemai">
 
   <Identity
-    Name="AB66294D-D8F4-48AF-BADF-E7C784C2D83E"
+    Name="595010FE-0E8B-416A-9137-C0A51F5C9753"
     Publisher="CN=AppPublisher"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="AB66294D-D8F4-48AF-BADF-E7C784C2D83E" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="595010FE-0E8B-416A-9137-C0A51F5C9753" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>PolarisCommander.App</DisplayName>

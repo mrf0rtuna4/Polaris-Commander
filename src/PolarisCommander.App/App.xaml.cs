@@ -1,41 +1,44 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
-using PolarisCommander.Core.Abstractions;
-using PolarisCommander.Infrastructure.Services;
-using PolarisCommander.UI.ViewModels;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Shapes;
 
-namespace PolarisCommander.App;
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
 
+namespace PolarisCommander_App;
+
+/// <summary>
+/// Provides application-specific behavior to supplement the default Application class.
+/// </summary>
 public partial class App : Application
 {
-    public static IHost HostContainer { get; private set; } = null!;
-
+    private Window? _window;
+    
+    /// <summary>
+    /// Initializes the singleton application object.  This is the first line of authored code
+    /// executed, and as such is the logical equivalent of main() or WinMain().
+    /// </summary>
     public App()
     {
         InitializeComponent();
-
-        HostContainer = Microsoft.Extensions.Hosting.Host
-            .CreateDefaultBuilder()
-            .ConfigureServices((context, services) =>
-            {
-                services.AddSingleton<IStorageProvider, LocalFileProvider>();
-
-                services.AddSingleton<IFileNavigationService, FileNavigationService>();
-
-                services.AddSingleton<MainViewModel>();
-
-                services.AddSingleton<MainWindow>();
-            })
-            .Build();
     }
 
-    protected override async void OnLaunched(LaunchActivatedEventArgs args)
+    /// <summary>
+    /// Invoked when the application is launched.
+    /// </summary>
+    /// <param name="args">Details about the launch request and process.</param>
+    protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
-        await HostContainer.StartAsync();
-
-        var window = HostContainer.Services.GetRequiredService<MainWindow>();
-
-        window.Activate();
+        _window = new MainWindow();
+        _window.Activate();
     }
 }
