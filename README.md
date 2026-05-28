@@ -97,14 +97,14 @@ dotnet run --project .\src\PolarisCommander.App\PolarisCommander.App.csproj
 * [x] Подготовить FTP provider
 * [x] Подготовить SFTP provider
 * [x] Добавить базовую навигацию
-* [ ] Настроить themes
+* [x] Настроить themes
 * [x] Добавить .gitignore
 * [x] double click navigation
-* [ ] back history
-* [ ] forward history
-* [ ] breadcrumbs
+* [x] back history
+* [x] forward history
+* [x] breadcrumbs
 * [ ] drive picker
-* [ ] current folder refresh
+* [x] current folder refresh
 * [ ] keyboard navigation
 * [ ] path validation
 * [ ] copy queue
