@@ -73,6 +73,14 @@ dotnet add package SSH.NET
 dotnet add package FluentFTP
 ```
 
+## Запуск
+
+```bash
+dotnet clean
+dotnet build
+dotnet run --project .\src\PolarisCommander.App\PolarisCommander.App.csproj
+```
+
 ---
 
 # TODO

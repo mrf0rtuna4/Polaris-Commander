@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="PolarisBackgroundBrush" Color="#181818" />
+            <SolidColorBrush x:Key="PolarisSurfaceBrush" Color="#202020" />
+            <SolidColorBrush x:Key="PolarisAccentBrush" Color="#4CC2FF" />
+            <SolidColorBrush x:Key="PolarisForegroundBrush" Color="#FFFFFF" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="PolarisBackgroundBrush" Color="#F7F9FC" />
+            <SolidColorBrush x:Key="PolarisSurfaceBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="PolarisAccentBrush" Color="#0067C0" />
+            <SolidColorBrush x:Key="PolarisForegroundBrush" Color="#1A1A1A" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+            <SolidColorBrush x:Key="PolarisBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="PolarisSurfaceBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="PolarisAccentBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+            <SolidColorBrush x:Key="PolarisForegroundBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

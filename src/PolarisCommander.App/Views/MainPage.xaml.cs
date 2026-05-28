@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Windows.System;
 using PolarisCommander_App.Models;
 using PolarisCommander_App.ViewModels;
 
@@ -30,29 +32,87 @@ public sealed partial class MainPage : Page
             _ => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
         };
 
-        ViewModel.NavigateTo(targetPath);
+        NavigateTo(targetPath);
+    }
+
+    private void OnDriveSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not ComboBox comboBox || comboBox.SelectedItem is not string drive)
+        {
+            return;
+        }
+
+        if (string.Equals(drive, ViewModel.SelectedDrive, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        NavigateTo(drive);
+    }
+
+    private void OnNavigateBackClicked(object sender, RoutedEventArgs e)
+    {
+        ViewModel.NavigateBack();
+        Bindings.Update();
+    }
+
+    private void OnNavigateForwardClicked(object sender, RoutedEventArgs e)
+    {
+        ViewModel.NavigateForward();
         Bindings.Update();
     }
 
     private void OnNavigateUpClicked(object sender, RoutedEventArgs e)
     {
-        if (!ViewModel.CanNavigateUp())
-        {
-            return;
-        }
 
         ViewModel.NavigateUp();
         Bindings.Update();
     }
 
+    private void OnRefreshClicked(object sender, RoutedEventArgs e)
+    {
+        ViewModel.Refresh();
+        Bindings.Update();
+    }
+
+    private void OnBreadcrumbItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
+    {
+        if (args.Item is BreadcrumbItem breadcrumb)
+        {
+            ViewModel.NavigateToBreadcrumb(breadcrumb);
+            Bindings.Update();
+        }
+    }
+
     private void OnItemClicked(object sender, ItemClickEventArgs e)
     {
-        if (e.ClickedItem is not FileSystemItem item || !item.IsDirectory)
+        NavigateIntoItem(e.ClickedItem);
+    }
+
+    private void OnFileListKeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if (e.Key != VirtualKey.Enter || FileListView.SelectedItem is null)
         {
             return;
         }
 
-        ViewModel.NavigateTo(item.FullPath);
+        NavigateIntoItem(FileListView.SelectedItem);
+        e.Handled = true;
+    }
+
+    private void NavigateIntoItem(object? item)
+    {
+        if (item is not FileSystemItem fileSystemItem || !fileSystemItem.IsDirectory)
+        {
+            return;
+        }
+
+        NavigateTo(fileSystemItem.FullPath);
+    }
+
+    private void NavigateTo(string path)
+    {
+        ViewModel.NavigateTo(path);
         Bindings.Update();
     }
 }

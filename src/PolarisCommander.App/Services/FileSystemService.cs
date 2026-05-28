@@ -12,29 +12,41 @@ public sealed class FileSystemService : IFileSystemService
             return [];
         }
 
-        List<FileSystemItem> items = [];
-        DirectoryInfo directoryInfo = new(path);
-
-        foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
+        try
         {
-            items.Add(new FileSystemItem
-            {
-                Name = directory.Name,
-                FullPath = directory.FullName,
-                IsDirectory = true,
-            });
-        }
+            List<FileSystemItem> items = [];
+            DirectoryInfo directoryInfo = new(path);
 
-        foreach (FileInfo file in directoryInfo.GetFiles())
+            foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
+            {
+                items.Add(new FileSystemItem
+                {
+                    Name = directory.Name,
+                    FullPath = directory.FullName,
+                    IsDirectory = true,
+                });
+            }
+
+            foreach (FileInfo file in directoryInfo.GetFiles())
+            {
+                items.Add(new FileSystemItem
+                {
+                    Name = file.Name,
+                    FullPath = file.FullName,
+                    IsDirectory = false,
+                });
+            }
+
+            return items;
+        }
+        catch (Exception exception) when (IsFileSystemAccessException(exception))
         {
-            items.Add(new FileSystemItem
-            {
-                Name = file.Name,
-                FullPath = file.FullName,
-                IsDirectory = false,
-            });
+            return [];
         }
+    }
 
-        return items;
+    private static bool IsFileSystemAccessException(Exception exception)
+    {
+        return exception is IOException or UnauthorizedAccessException or DirectoryNotFoundException or PathTooLongException;
     }
 }

@@ -13,6 +13,7 @@ public partial class App : Application
 
     public App()
     {
+        UnhandledException += OnUnhandledException;
         InitializeComponent();
         Services = ConfigureServices();
     }
@@ -22,6 +23,31 @@ public partial class App : Application
     {
         _window = new MainWindow();
         _window.Activate();
+    }
+
+    private static void OnUnhandledException(
+        object sender,
+        Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    {
+        try
+        {
+            string logDirectory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "PolarisCommander");
+
+            Directory.CreateDirectory(logDirectory);
+
+            string logPath = Path.Combine(logDirectory, "startup-errors.log");
+
+            File.AppendAllText(
+                logPath,
+                $"[{DateTimeOffset.Now:u}] {e.Exception}\n");
+        }
+        catch
+        {
+        }
+
+        e.Handled = true;
     }
 
 

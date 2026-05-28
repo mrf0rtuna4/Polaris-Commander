@@ -4,7 +4,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:models="using:PolarisCommander_App.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource PolarisBackgroundBrush}"
     mc:Ignorable="d">
 
     <Grid>
@@ -15,62 +17,140 @@
 
         <NavigationView
             x:Name="MainNavigation"
+            x:Uid="MainNavigation"
+            AutomationProperties.AutomationId="MainNavigation"
+            Background="{ThemeResource PolarisSurfaceBrush}"
             IsSettingsVisible="False"
             PaneDisplayMode="Left"
             SelectionChanged="OnNavigationSelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Tag="home" />
-                <NavigationViewItem Content="Documents" Tag="documents" />
-                <NavigationViewItem Content="Downloads" Tag="downloads" />
+                <NavigationViewItem x:Uid="HomeNavigation" Tag="home" />
+                <NavigationViewItem x:Uid="DocumentsNavigation" Tag="documents" />
+                <NavigationViewItem x:Uid="DownloadsNavigation" Tag="downloads" />
             </NavigationView.MenuItems>
         </NavigationView>
 
         <Grid
             Grid.Column="1"
             Padding="16"
-            RowSpacing="8">
+            Background="{ThemeResource PolarisBackgroundBrush}"
+            RowSpacing="12">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" Spacing="8">
+                <ComboBox
+                    x:Uid="DrivePicker"
+                    AutomationProperties.AutomationId="DrivePicker"
+                    ItemsSource="{x:Bind ViewModel.Drives, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedDrive, Mode=OneWay}"
+                    SelectionChanged="OnDriveSelectionChanged" />
+
                 <Button
-                    Content="Up"
-                    Click="OnNavigateUpClicked" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Text="{x:Bind ViewModel.CurrentPath, Mode=OneWay}" />
+                    x:Uid="BackButton"
+                    AccessKey="B"
+                    AutomationProperties.AutomationId="BackButton"
+                    Click="OnNavigateBackClicked"
+                    IsEnabled="{x:Bind ViewModel.CanNavigateBack, Mode=OneWay}">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Left" />
+                    </Button.KeyboardAccelerators>
+                </Button>
+
+                <Button
+                    x:Uid="ForwardButton"
+                    AccessKey="F"
+                    AutomationProperties.AutomationId="ForwardButton"
+                    Click="OnNavigateForwardClicked"
+                    IsEnabled="{x:Bind ViewModel.CanNavigateForward, Mode=OneWay}">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Right" />
+                    </Button.KeyboardAccelerators>
+                </Button>
+
+                <Button
+                    x:Uid="UpButton"
+                    AccessKey="U"
+                    AutomationProperties.AutomationId="UpButton"
+                    Click="OnNavigateUpClicked"
+                    IsEnabled="{x:Bind ViewModel.CanNavigateUp, Mode=OneWay}" />
+
+                <Button
+                    x:Uid="RefreshButton"
+                    AccessKey="R"
+                    AutomationProperties.AutomationId="RefreshButton"
+                    Click="OnRefreshClicked">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F5" />
+                    </Button.KeyboardAccelerators>
+                </Button>
             </StackPanel>
 
-            <TextBlock
-                Grid.Row="1"
-                FontSize="16"
-                FontWeight="SemiBold"
-                Text="File view" />
+            <StackPanel Grid.Row="1" Spacing="4">
+                <TextBlock
+                    x:Name="CurrentPathLabel"
+                    x:Uid="CurrentPathLabel"
+                    FontWeight="SemiBold" />
+                <TextBlock
+                    AutomationProperties.LabeledBy="{x:Bind CurrentPathLabel}"
+                    Text="{x:Bind ViewModel.CurrentPath, Mode=OneWay}"
+                    TextTrimming="CharacterEllipsis" />
+            </StackPanel>
 
-            <ListView
-                x:Name="FileListView"
+            <BreadcrumbBar
+                x:Name="PathBreadcrumbs"
                 Grid.Row="2"
-                IsItemClickEnabled="True"
-                ItemClick="OnItemClicked"
-                ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:FileSystemItem" xmlns:local="using:PolarisCommander_App.Models">
-                        <Grid Padding="6">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="220" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{x:Bind Name}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Text="{x:Bind Type}" />
-                        </Grid>
+                x:Uid="PathBreadcrumbs"
+                AutomationProperties.AutomationId="PathBreadcrumbs"
+                ItemClicked="OnBreadcrumbItemClicked"
+                ItemsSource="{x:Bind ViewModel.Breadcrumbs, Mode=OneWay}">
+                <BreadcrumbBar.ItemTemplate>
+                    <DataTemplate x:DataType="models:BreadcrumbItem">
+                        <TextBlock Text="{x:Bind DisplayName}" />                
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </BreadcrumbBar.ItemTemplate>
+            </BreadcrumbBar>
+
+            <Grid Grid.Row="3" RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    x:Uid="FileViewHeader"
+                    FontSize="16"
+                    FontWeight="SemiBold" />
+
+                <ListView
+                    x:Name="FileListView"
+                    Grid.Row="1"
+                    x:Uid="FileListView"
+                    AutomationProperties.AutomationId="FileListView"
+                    IsItemClickEnabled="True"
+                    ItemClick="OnItemClicked"
+                    ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+                    KeyDown="OnFileListKeyDown">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:FileSystemItem">
+                            <Grid Padding="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{x:Bind Name}" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Text="{x:Bind Type}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
