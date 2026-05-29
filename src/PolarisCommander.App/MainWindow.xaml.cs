@@ -9,7 +9,8 @@ public sealed partial class MainWindow : Window
         try
         {
             InitializeComponent();
-
+            
+            Title = AppTitleBar.Title;
             ExtendsContentIntoTitleBar = true;
 
             SetTitleBar(AppTitleBar);

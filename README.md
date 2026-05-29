@@ -75,10 +75,26 @@ dotnet add package FluentFTP
 
 ## Запуск
 
+
+### Ручной dotnet
 ```bash
 dotnet clean
 dotnet build
 dotnet run --project .\src\PolarisCommander.App\PolarisCommander.App.csproj
+```
+
+### Ручной powershell
+
+```powershell
+.\scripts\Start-PolarisCommander.ps1
+```
+
+Полезные параметры:
+
+```powershell
+.\scripts\Start-PolarisCommander.ps1 -SkipClean      # не выполнять clean перед build
+.\scripts\Start-PolarisCommander.ps1 -NoLaunch       # только restore/build без запуска
+.\scripts\Start-PolarisCommander.ps1 -Configuration Release
 ```
 
 ---
