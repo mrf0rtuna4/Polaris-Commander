@@ -6,13 +6,25 @@ public sealed partial class MainWindow : Window
 {
     public MainWindow()
     {
-        InitializeComponent();
+        try
+        {
+            InitializeComponent();
 
-        ExtendsContentIntoTitleBar = true;
-        SetTitleBar(AppTitleBar);
+            ExtendsContentIntoTitleBar = true;
 
-        AppWindow.SetIcon("Assets/AppIcon.ico");
+            SetTitleBar(AppTitleBar);
 
-        RootFrame.Navigate(typeof(MainPage));
+            RootFrame.Navigate(typeof(MainPage));
+        }
+        catch (Exception ex)
+        {
+            File.WriteAllText(
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    "mainwindow-crash.txt"),
+                ex.ToString());
+
+            throw;
+        }
     }
 }

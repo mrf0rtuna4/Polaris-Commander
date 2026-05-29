@@ -19,10 +19,23 @@ public partial class App : Application
     }
 
     public static IServiceProvider Services { get; private set; } = null!;
-    protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
-        _window = new MainWindow();
-        _window.Activate();
+        try
+        {
+            _window = new MainWindow();
+            _window.Activate();
+        }
+        catch (Exception ex)
+        {
+            string path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                "polaris-startup-crash.txt");
+
+            File.WriteAllText(path, ex.ToString());
+
+            throw;
+        }
     }
 
     private static void OnUnhandledException(

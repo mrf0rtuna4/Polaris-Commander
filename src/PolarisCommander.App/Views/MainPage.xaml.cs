@@ -12,8 +12,22 @@ public sealed partial class MainPage : Page
 {
     public MainPage()
     {
-        ViewModel = App.Services.GetRequiredService<MainViewModel>();
-        InitializeComponent();
+        try
+        {
+            ViewModel = App.Services.GetRequiredService<MainViewModel>();
+
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            File.WriteAllText(
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    "mainpage-crash.txt"),
+                ex.ToString());
+
+            throw;
+        }
     }
 
     public MainViewModel ViewModel { get; }

@@ -7,7 +7,6 @@
     xmlns:local="using:PolarisCommander_App"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Uid="MainWindow"
-    Title="Polaris Commander"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
         <MicaBackdrop />
@@ -22,7 +21,7 @@
         <TitleBar
             x:Name="AppTitleBar"
             x:Uid="AppTitleBar"
-            Title="Polaris Commander">
+           >
             <TitleBar.IconSource>
                 <ImageIconSource ImageSource="Assets/AppIcon.ico" />
             </TitleBar.IconSource>
