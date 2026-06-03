@@ -119,7 +119,7 @@ dotnet run --project .\src\PolarisCommander.App\PolarisCommander.App.csproj
 * [x] back history
 * [x] forward history
 * [x] breadcrumbs
-* [ ] drive picker
+* [x] drive picker
 * [x] current folder refresh
 * [ ] keyboard navigation
 * [ ] path validation
